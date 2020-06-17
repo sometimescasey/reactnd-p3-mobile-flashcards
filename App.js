@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import FlashcardStatusBar from './components/FlashcardStatusBar';
 import { blue } from './utils/colors';
 import Navigator from './navigator/Navigator';
+import Card from './components/Card';
 
 // TODO: DeckScreen will become navigator
 export default function App() {
@@ -11,7 +12,7 @@ export default function App() {
         <FlashcardStatusBar 
                   backgroundColor={blue} 
                   barStyle='light-content'/>
-        <Navigator/>
+        <Card/>
       </Fragment>
   );
 }
