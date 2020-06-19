@@ -4,9 +4,10 @@ import DeckList from '../components/DeckList';
 
 export default class DeckScreen extends Component {
     render() {
+        const { navigation } = this.props;
         return (
             <View>
-                <DeckList/>
+                <DeckList navigation={navigation}/>
             </View>
             
         )

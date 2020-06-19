@@ -2,6 +2,7 @@ import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import DeckScreen from '../screens/DeckScreen';
+import ToDeckNavigator from './ToDeckNavigator';
 import NewDeckScreen from '../screens/NewDeckScreen';
 import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { blue, cyan } from '../utils/colors';
@@ -9,7 +10,7 @@ import { blue, cyan } from '../utils/colors';
 const Navigator = createBottomTabNavigator(
     routes = {
         "Main": {
-            screen: DeckScreen,
+            screen: ToDeckNavigator,
             navigationOptions: {
                 tabBarLabel: 'History',
                 tabBarIcon: ({ tintColor }) => (<FontAwesome

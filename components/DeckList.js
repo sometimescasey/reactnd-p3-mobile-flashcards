@@ -4,16 +4,17 @@ import Deck from './Deck';
 
 // TODO: hardcode, replace with data later
 const DECK_LIST = [
-    {title: "deck one"}, 
-    {title: "deck two"}
+    {title: "React"}, 
+    {title: "JavaScript"}
 ]
 
 export default class DeckList extends Component {
     render() {
+        const { navigation } = this.props;
         return (
             <View style={[styles.deckList, styles.deckListBorder]}>
                     {DECK_LIST.map((d) => (
-                        <Deck deckObj={d} key={d.title}/>
+                        <Deck deckObj={d} key={d.title} navigation={navigation}/>
                     ))}
             </View>
         )

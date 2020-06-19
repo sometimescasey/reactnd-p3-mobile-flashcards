@@ -12,7 +12,7 @@ export default function App() {
         <FlashcardStatusBar 
                   backgroundColor={blue} 
                   barStyle='light-content'/>
-        <Card/>
+        <Navigator/>
       </Fragment>
   );
 }

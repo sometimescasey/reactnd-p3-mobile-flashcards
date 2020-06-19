@@ -4,24 +4,12 @@ import Deck from './Deck';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
-const questions = [
-    {
-      question: 'What is React?',
-      answer: 'A library for managing user interfaces'
-    },
-    {
-      question: 'Where do you make Ajax requests in React?',
-      answer: 'The componentDidMount lifecycle event'
-    }
-  ];
-
-const cardObj = questions[0];
-const question = cardObj.question;
-const answer = cardObj.answer;
-
 export default class CardQ extends Component {
     render() {
         const { navigation }  = this.props;
+        const cardObj = navigation.getParam('cardObj');
+        const question = cardObj.question;
+        const answer = cardObj.answer;
 
         return (
             <View style={styles.card}>
