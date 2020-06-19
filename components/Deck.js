@@ -31,7 +31,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 export default class Deck extends Component {
     render() {
         const { deckObj, navigation } = this.props;
-        console.log(deckObj);
         return (
                 <View style={styles.card}>
                     <TouchableOpacity style={styles.clickable} 
