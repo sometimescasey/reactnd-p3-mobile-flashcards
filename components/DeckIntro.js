@@ -1,51 +1,20 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AddCard from './AddCard';
 
-// TODO: move to redux
-export const DECK_DATA = {
-    React: {
-      title: 'React',
-      questions: [
-        {
-          question: 'What is React?',
-          answer: 'A library for managing user interfaces'
-        },
-        {
-          question: 'Where do you make Ajax requests in React?',
-          answer: 'The componentDidMount lifecycle event'
-        },
-        {
-            question: 'Can functional components store state?',
-            answer: 'Yes, using hooks!'
-        }
-      ]
-    },
-    JavaScript: {
-      title: 'JavaScript',
-      questions: [
-        {
-          question: 'What is a closure?',
-          answer: 'The combination of a function and the lexical environment within which that function was declared.'
-        }
-      ]
-    }
-  };
-
-export default class DeckIntro extends Component {
-    state = {
-
-    };
+class DeckIntro extends Component {
 
     cardCount = () => {
         // some code dupe here...hmm think about this
+        const { deckData } = this.props;
         const { deckObj } = this.props.route.params;
-        return DECK_DATA[deckObj.title].questions.length;
+        return deckData[deckObj.title].questions.length;
     }
     
     render() {
-        const { route, navigation } = this.props;
+        const { route, navigation, deckData } = this.props;
         const { deckObj } = route.params;
 
         return (
@@ -69,7 +38,7 @@ export default class DeckIntro extends Component {
                 onPress={() => {
                     navigation.push('Card',
                         {
-                            qList: DECK_DATA[deckObj.title].questions,    
+                            qList: deckData[deckObj.title].questions,    
                         }
                     )
                 }}
@@ -108,3 +77,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     } 
 });
+
+function mapStateToProps(store, ownProps) {
+    return {
+        route: ownProps.route,
+        navigation: ownProps.navigation,
+        deckData: store,
+    };
+}
+
+export default connect(mapStateToProps)(DeckIntro);
