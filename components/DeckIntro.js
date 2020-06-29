@@ -37,6 +37,12 @@ export default class DeckIntro extends Component {
     state = {
 
     };
+
+    cardCount = () => {
+        // some code dupe here...hmm think about this
+        const { deckObj } = this.props.route.params;
+        return DECK_DATA[deckObj.title].questions.length;
+    }
     
     render() {
         const { route, navigation } = this.props;
@@ -48,7 +54,7 @@ export default class DeckIntro extends Component {
                 {deckObj.title}
             </Text>
             <Text style={styles.cardCount}>
-                n cards
+                {`${this.cardCount()} cards`}
             </Text>
             <TouchableOpacity 
                 style={styles.addButton}

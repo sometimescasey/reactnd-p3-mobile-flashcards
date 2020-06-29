@@ -22,3 +22,9 @@ export const DECK_DATA = {
       ]
     }
   };
+
+  export function _getData () {
+    return new Promise((res, rej) => {
+      setTimeout(() => res({...DECK_DATA}), 1000)
+    })
+  }

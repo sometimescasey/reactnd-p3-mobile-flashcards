@@ -2,10 +2,18 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const CardButton = ({ buttonCallback, buttonText }) => {
+const CardButton = (props) => {
+    const { 
+        buttonCallback,
+        buttonText, 
+        buttonColor = "#ccc" } = props;
+
     return (
         <TouchableOpacity 
-            style={styles.cardButton}
+            style={[
+                styles.cardButton,
+                {backgroundColor: buttonColor}
+                ]}
             onPress={() => {
                 buttonCallback();
             }}>
@@ -22,6 +30,7 @@ class Card extends Component {
         currentIdx: 0, 
         // TODO: move this to redux store later so the user
         // can go back to same spot in the deck
+        markedAnswer: false
     };
 
     flipCard = () => {
@@ -35,11 +44,19 @@ class Card extends Component {
             currentIdx: cs.currentIdx+1,
         }))
     };
+
+    handleCorrect = () => {
+
+    }
+
+    handleIncorrect = () => {
+
+    }
     
     render() {
         const { route, navigation } = this.props;
         const { qList } = route.params;
-        const { currentIdx } = this.state;
+        const { currentIdx, markedAnswer } = this.state;
         const qObj = qList[currentIdx];
 
         const front = (
@@ -50,8 +67,19 @@ class Card extends Component {
                     <CardButton buttonCallback={this.flipCard}
                         buttonText="Show answer"
                     />
+
+                    <CardButton buttonCallback={this.handleCorrect}
+                        buttonText="Correct"
+                        buttonColor="#00FF00"
+                    />
+                    <CardButton buttonCallback={this.handleIncorrect}
+                        buttonText="Incorrect"
+                        buttonColor="#FF0000"
+                    />
+
                     {
-                        (qList.length > this.state.currentIdx+1) 
+                        (qList.length > this.state.currentIdx+1)
+                        && ( markedAnswer ) 
                         && (<CardButton buttonCallback={this.nextCard}
                         buttonText="Next card"/>)
                     }
