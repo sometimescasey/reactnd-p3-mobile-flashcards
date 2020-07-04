@@ -1,36 +1,22 @@
 import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { connect } from 'react-redux';
+import CardButton from './CardButton';
+import { incrementIndex, resetIndex } from '../actions';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faQuestionCircle,
+        faCheckCircle, 
+        faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
-const CardButton = (props) => {
-    const { 
-        buttonCallback,
-        buttonText, 
-        buttonColor = "#ccc" } = props;
-
-    return (
-        <TouchableOpacity 
-            style={[
-                styles.cardButton,
-                {backgroundColor: buttonColor}
-                ]}
-            onPress={() => {
-                buttonCallback();
-            }}>
-            <Text>
-                {buttonText}
-            </Text>
-        </TouchableOpacity>
-    );
-}
+const greenColor = "#5fb648";
+const redColor = "#ff5959";
+const iconSize = 40;
 
 class Card extends Component {
     state = {
         showFront: true,
-        currentIdx: 0, 
-        // TODO: move this to redux store later so the user
-        // can go back to same spot in the deck
-        markedAnswer: false
+        correct: null,
+        backgroundColor: null,
     };
 
     flipCard = () => {
@@ -40,74 +26,178 @@ class Card extends Component {
     };
 
     nextCard = () => {
+        const { route, dispatch } = this.props;
+        const { deckTitle } = route.params;
+        dispatch(incrementIndex(deckTitle));
         this.setState((cs) => ({
-            currentIdx: cs.currentIdx+1,
+            // currentIdx: cs.currentIdx+1,
+            // TODO: redux update
+            correct: null, // todo: move this to redux too
+            showFront: true,
+        }))
+    };
+
+    resetDeck = () => {
+        const { route, dispatch } = this.props;
+        const { deckTitle } = route.params;
+        dispatch(resetIndex(deckTitle));
+        this.setState((cs) => ({
+            correct: null,
         }))
     };
 
     handleCorrect = () => {
-
+        this.setState(() => ({
+            correct: true,
+            borderColor: greenColor,
+        }));
     }
 
     handleIncorrect = () => {
-
+        this.setState(() => ({
+            correct: false,
+            borderColor: redColor,
+        }));
     }
     
     render() {
-        const { route, navigation } = this.props;
-        const { qList } = route.params;
-        const { currentIdx, markedAnswer } = this.state;
+        const { route, deckData, navigation, currentIdx } = this.props;
+        const { qList, deckTitle } = route.params;
+        const { correct } = this.state;
         const qObj = qList[currentIdx];
 
-        const front = (
-            <View style={styles.cardWrapper}>
+        const correctFontWeight = correct ? 'bold' : 'normal';
+        const incorrectFontWeight = (correct === false) ? 'bold' : 'normal';
+
+        const frontMatter = (
+            <View style={styles.cardMiddleInner}>
                 <Text style={styles.questionText}>
                     { qObj.question }
                 </Text>
-                    <CardButton buttonCallback={this.flipCard}
-                        buttonText="Show answer"
-                    />
-
-                    <CardButton buttonCallback={this.handleCorrect}
-                        buttonText="Correct"
-                        buttonColor="#00FF00"
-                    />
-                    <CardButton buttonCallback={this.handleIncorrect}
-                        buttonText="Incorrect"
-                        buttonColor="#FF0000"
-                    />
-
-                    {
-                        (qList.length > this.state.currentIdx+1)
-                        && ( markedAnswer ) 
-                        && (<CardButton buttonCallback={this.nextCard}
-                        buttonText="Next card"/>)
-                    }
-                    
-                    
+                <CardButton buttonCallback={this.flipCard}
+                    buttonText="Show Answer"
+                    width={180}
+                />
             </View>
         );
-        
-        const back = (
-            <View style={styles.cardWrapper}>
+
+        const backMatter = (
+            <View style={styles.cardMiddleInner}>
                 <Text style={styles.answerText}>
                     { qObj.answer }
                 </Text>
-                    <CardButton buttonCallback={this.flipCard}
-                        buttonText="Show question"
-                    />
+                <CardButton buttonCallback={this.flipCard}
+                    buttonText="Show Question"
+                    width={180}
+                />
             </View>
         );
 
-        const side = (this.state.showFront) ? front : back;
+        const card = (
+            <View style={[styles.cardWrapper, 
+            {borderColor: this.state.borderColor}]}>
+                <View id="card-top" style={styles.cardTop}>
+                <Text>
+                    {`Card: ${currentIdx + 1}/${qList.length}`}
+                </Text>
+                <Text>
+                    {`Score: ${currentIdx + 1}/${qList.length}`}
+                </Text>
+                </View>
+                <View style={styles.cardIconContainer}>
+                    {(this.state.correct === null && <FontAwesomeIcon icon={faQuestionCircle} size={iconSize}
+                    />)}
+                    {(this.state.correct === true && <FontAwesomeIcon icon={faCheckCircle} 
+                    size={iconSize}
+                    color={greenColor}
+                    />)}
+                    {(this.state.correct === false && <FontAwesomeIcon icon={faExclamationCircle} size={iconSize}
+                    color={redColor}
+                    />)}
+                </View>
+                <View id="card-middle" style={styles.cardMiddle}>
+                    {(this.state.showFront) ? frontMatter : backMatter }
+                </View>
+                <View style={styles.markingButtons}>
+                    <CardButton buttonCallback={this.handleCorrect}
+                        buttonText="Correct"
+                        buttonColor={greenColor}
+                        fontWeight={correctFontWeight}
+                    />
+                    <CardButton buttonCallback={this.handleIncorrect}
+                        buttonText="Incorrect"
+                        buttonColor={redColor}
+                        fontWeight={incorrectFontWeight}
+                    />
+                </View>
+                <View id="card-bottom" style={styles.cardBottom}>
+                <CardButton buttonCallback={this.resetDeck}
+                        buttonText="Reset Deck"
+                        buttonColor="#ddd"
+                        fontWeight='normal'
+                        width={120}
+                    />
+                
+                {
+                        (qList.length > currentIdx+1)
+                        && ( correct !== null ) 
+                        && (<CardButton buttonCallback={this.nextCard}
+                        buttonText="Next card"/>)
+                    }
+                </View>   
+            </View>
+        );
 
-        return side;
+        return card;
     }
 }
 
-export default Card;
+function mapStateToProps(store, ownProps) {
+    const { deckTitle } = ownProps.route.params;
+    const currentIdx = store[deckTitle].currentIdx;
+
+    return {
+        deckData: store,
+        currentIdx,
+    };
+}
+
+export default connect(mapStateToProps)(Card);
+
+// export default Card;
 
 const styles = StyleSheet.create({
+    cardTop: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginBottom: 10,
+    },
+    cardIconContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    cardMiddle: {
+        flex: 3,
+    },
+    cardMiddleInner: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 10,
+    },
+    markingButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+    },
+    cardBottom: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+    },
     cardButton: {
         backgroundColor: 'red',
         borderRadius: 10,
@@ -121,15 +211,18 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         margin: 10,
         padding: 10,
-        alignItems: 'center',
+        alignItems: 'stretch',
         justifyContent: 'center',
     },
     answerText: {
         padding: 10,
+        fontSize: 20,
+        textAlign: 'center',
     },
     questionText: {
         fontSize: 30,
         padding: 10,
+        textAlign: 'center',
     },
     correctButton: {
         backgroundColor: "#00ff00",

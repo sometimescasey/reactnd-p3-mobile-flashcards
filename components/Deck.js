@@ -7,7 +7,7 @@ class Deck extends Component {
     cardCount = () => {
         const { deckData, deckObj } = this.props;
         console.log("-----deckData:", deckData);
-        return deckData[deckObj.title].questions.length;
+        return Object.keys(deckData[deckObj.title].questions).length;
     }
 
     render() {

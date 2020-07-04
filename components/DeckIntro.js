@@ -7,10 +7,30 @@ import AddCard from './AddCard';
 class DeckIntro extends Component {
 
     cardCount = () => {
-        // some code dupe here...hmm think about this
-        const { deckData } = this.props;
-        const { deckObj } = this.props.route.params;
-        return deckData[deckObj.title].questions.length;
+        const { route, deckData } = this.props;
+        const { deckObj } = route.params;
+        return Object.keys(deckData[deckObj.title].questions).length;
+    }
+
+    getQuestionList = () => {
+        const { route, navigation, deckData } = this.props;
+        const { deckObj } = route.params;
+        const qObj = deckData[deckObj.title].questions;
+        // map to list sorted by timestamp
+        function sortByTime(a, b) {
+            if (a.timestamp < b.timestamp) {
+                return -1;
+            }
+            if (a.timestamp > b.timestamp) {
+                return 1;
+            }
+            return 0;
+        }
+
+        const keys = Object.keys(qObj)
+        const qList = keys.map((k) => (qObj[k])).sort(sortByTime)
+
+        return qList;
     }
     
     render() {
@@ -38,7 +58,11 @@ class DeckIntro extends Component {
                 onPress={() => {
                     navigation.push('Card',
                         {
-                            qList: deckData[deckObj.title].questions,    
+                            // TODO: move first two to mapStateToProps,
+                            // they don't need to be here
+                            qList: this.getQuestionList(),
+                            currentIdx: deckData[deckObj.title].currentIdx,
+                            deckTitle: deckObj.title,     
                         }
                     )
                 }}
@@ -78,6 +102,8 @@ const styles = StyleSheet.create({
     } 
 });
 
+// TODO: refactor later, apparently this doesn't even
+// need to pass thru ownProps
 function mapStateToProps(store, ownProps) {
     return {
         route: ownProps.route,
