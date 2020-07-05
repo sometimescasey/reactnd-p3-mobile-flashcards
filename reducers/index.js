@@ -4,8 +4,8 @@ import {
     ADD_CARD,
     INCREMENT_INDEX,
     RESET_INDEX,
-    // INCREMENT_SCORE,
-    // DECREMENT_SCORE,
+    MARK_RIGHT,
+    MARK_WRONG,
  } from '../actions';
 
 // ------------ state shape --------------
@@ -31,6 +31,7 @@ import {
 
 function entries (state = {}, action) {
     let currentDeck = null;
+    let currentQ = null;
 
 	switch (action.type) {
 		case RECEIVE_DATA:
@@ -82,23 +83,36 @@ function entries (state = {}, action) {
                     questions: resetQuestions,
                 }
             }
-        // case INCREMENT_SCORE:
-        //     currentDeck = state[action.deck];
-        //     return {
-        //         ...state,
-        //         [action.deck]: {
-        //             ...currentDeck,
-        //             score: currentDeck.score + 1,
-        //         }
-        //     }
-        // case DECREMENT_SCORE:
-        //     return {
-        //         ...state,
-        //         [action.deck]: {
-        //             ...currentDeck,
-        //             score: currentDeck.score - 1,
-        //         }
-        //     }
+        case MARK_RIGHT:
+            currentDeck = state[action.deck];
+            return {
+                ...state,
+                [action.deck]: {
+                    ...currentDeck,
+                    questions: {
+                        ...currentDeck.questions,
+                        [action.qid]: {
+                            ...currentDeck.questions[action.qid],
+                            correct: true,
+                        }
+                    }
+                }
+            }
+        case MARK_WRONG:
+            currentDeck = state[action.deck];
+            return {
+                ...state,
+                [action.deck]: {
+                    ...currentDeck,
+                    questions: {
+                        ...currentDeck.questions,
+                        [action.qid]: {
+                            ...currentDeck.questions[action.qid],
+                            correct: false,
+                        }
+                    }
+                }
+            }
 		default:
 			return state
 	}

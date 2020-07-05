@@ -28,7 +28,13 @@ class DeckIntro extends Component {
         }
 
         const keys = Object.keys(qObj)
-        const qList = keys.map((k) => (qObj[k])).sort(sortByTime)
+        const qList = keys.map((k) => (
+            {
+                ...qObj[k],
+                qid: k,
+            }
+            
+            )).sort(sortByTime)
 
         return qList;
     }

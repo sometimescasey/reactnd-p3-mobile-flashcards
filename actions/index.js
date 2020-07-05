@@ -3,8 +3,8 @@ export const ADD_DECK = "ADD_DECK";
 export const ADD_CARD = "ADD_CARD";
 export const RESET_INDEX = "RESET_INDEX";
 export const INCREMENT_INDEX = "INCREMENT_INDEX";
-export const INCREMENT_SCORE = "INCREMENT_SCORE";
-export const DECREMENT_SCORE = "DECREMENT_SCORE";
+export const MARK_RIGHT = "MARK_RIGHT";
+export const MARK_WRONG = "MARK_WRONG";
 
 export function receiveData (data) {
 	return {
@@ -39,5 +39,21 @@ export function resetIndex (deck) {
 	return {
 		type: RESET_INDEX,
 		deck,
+	}
+}
+
+export function markRight (deck, qid) {
+	return {
+		type: MARK_RIGHT,
+		deck,
+		qid,
+	}
+}
+
+export function markWrong (deck, qid) {
+	return {
+		type: MARK_WRONG,
+		deck,
+		qid,
 	}
 }

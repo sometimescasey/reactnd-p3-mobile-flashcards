@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import CardButton from './CardButton';
-import { incrementIndex, resetIndex } from '../actions';
+import { 
+    incrementIndex,
+    resetIndex,
+    markRight,
+    markWrong } from '../actions';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faQuestionCircle,
         faCheckCircle, 
@@ -15,13 +19,38 @@ const iconSize = 40;
 class Card extends Component {
     state = {
         showFront: true,
+        showScore: false,
         correct: null,
         backgroundColor: null,
+    };
+
+    getScoreAndAttempts = () => {
+        const { route, deckData } = this.props;
+        const { deckTitle } = route.params;
+
+        const curDeck = deckData[deckTitle].questions;
+
+        const attemptList = Object.keys(curDeck).map((k) => curDeck[k]).filter((q) => (q.correct !== null));
+
+        const correctList = attemptList.filter((q) => (q.correct === true));
+
+        console.log("attemptList: ", attemptList.length);
+        console.log("correctList: ", correctList.length);
+
+        return { 
+            curScore: correctList.length,
+            attempts: attemptList.length };
     };
 
     flipCard = () => {
         this.setState((cs) => ({
             showFront: !cs.showFront,
+        }))
+    };
+
+    showScore = () => {
+        this.setState((cs) => ({
+            showScore: true,
         }))
     };
 
@@ -43,10 +72,15 @@ class Card extends Component {
         dispatch(resetIndex(deckTitle));
         this.setState((cs) => ({
             correct: null,
+            showScore: false,
         }))
     };
 
     handleCorrect = () => {
+        const { route, currentIdx, dispatch } = this.props;
+        const { qList, deckTitle } = route.params;
+        console.log("correct, qid ", qList[currentIdx].qid);
+        dispatch(markRight(deckTitle, qList[currentIdx].qid))
         this.setState(() => ({
             correct: true,
             borderColor: greenColor,
@@ -54,6 +88,10 @@ class Card extends Component {
     }
 
     handleIncorrect = () => {
+        const { route, currentIdx, dispatch } = this.props;
+        const { qList, deckTitle } = route.params;
+        console.log("incorrect, qid ", qList[currentIdx].qid);
+        dispatch(markWrong(deckTitle, qList[currentIdx].qid))
         this.setState(() => ({
             correct: false,
             borderColor: redColor,
@@ -93,6 +131,8 @@ class Card extends Component {
             </View>
         );
 
+        const { curScore, attempts } = this.getScoreAndAttempts();
+
         const card = (
             <View style={[styles.cardWrapper, 
             {borderColor: this.state.borderColor}]}>
@@ -101,7 +141,7 @@ class Card extends Component {
                     {`Card: ${currentIdx + 1}/${qList.length}`}
                 </Text>
                 <Text>
-                    {`Score: ${currentIdx + 1}/${qList.length}`}
+                    {`Score: ${curScore}/${attempts}`}
                 </Text>
                 </View>
                 <View style={styles.cardIconContainer}>
@@ -137,18 +177,44 @@ class Card extends Component {
                         fontWeight='normal'
                         width={120}
                     />
-                
                 {
+                    (correct != null) && 
                         (qList.length > currentIdx+1)
-                        && ( correct !== null ) 
                         && (<CardButton buttonCallback={this.nextCard}
                         buttonText="Next card"/>)
-                    }
+                }
+                {
+                    (correct != null) &&
+                        (qList.length === currentIdx+1) && (<CardButton buttonCallback={this.showScore}
+                        buttonText="Show score"/>)    
+                }
                 </View>   
             </View>
         );
 
-        return card;
+        const score = (
+            <View style={styles.cardWrapper}>
+                <View style={styles.cardMiddle}>
+                    <View style={styles.cardMiddleInner}>
+                        <Text>Score view</Text>
+                    </View>
+                </View>
+                <View id="card-bottom" style={styles.cardBottom}>
+                    <CardButton buttonCallback={this.resetDeck}
+                            buttonText="Reset Deck"
+                            buttonColor="#ddd"
+                            fontWeight='normal'
+                            width={120}
+                        />
+                </View>
+            </View>
+        );
+
+        if (this.state.showScore) {
+            return score;
+        } else {
+            return card;
+        }
     }
 }
 
