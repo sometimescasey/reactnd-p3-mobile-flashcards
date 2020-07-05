@@ -21,7 +21,7 @@ class Card extends Component {
         showFront: true,
         showScore: false,
         correct: null,
-        backgroundColor: null,
+        borderColor: null,
     };
 
     getScoreAndAttempts = () => {
@@ -73,6 +73,7 @@ class Card extends Component {
         this.setState((cs) => ({
             correct: null,
             showScore: false,
+            borderColor: null,
         }))
     };
 
@@ -192,11 +193,13 @@ class Card extends Component {
             </View>
         );
 
+        
         const score = (
             <View style={styles.cardWrapper}>
-                <View style={styles.cardMiddle}>
-                    <View style={styles.cardMiddleInner}>
-                        <Text>Score view</Text>
+                <View style={styles.scoreMiddle}>
+                    <View style={styles.scoreMiddleInner}>
+                    <Text style={styles.scoreText}>{`Final score: ${curScore} / ${attempts}`}</Text>
+                    <Text style={styles.scoreText}>{`(${(curScore * 100.0 / attempts).toFixed(2)}%)`}</Text>
                     </View>
                 </View>
                 <View id="card-bottom" style={styles.cardBottom}>
@@ -306,4 +309,15 @@ const styles = StyleSheet.create({
         width: 100,
         alignItems: 'center',
     },
+    scoreMiddle: {
+        flex: 5,
+        justifyContent: 'center',
+    },
+    scoreMiddleInner: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    scoreText: {
+        fontSize: 20,
+    }
 });
