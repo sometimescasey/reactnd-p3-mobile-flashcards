@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     addButton: {
-        backgroundColor: 'blue',
+        backgroundColor: '#bbf',
         padding: 10,
         margin: 10,
         borderRadius: 10,

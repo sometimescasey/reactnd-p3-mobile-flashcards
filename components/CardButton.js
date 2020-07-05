@@ -9,22 +9,29 @@ function CardButton(props) {
         buttonColor = "#ccc",
         fontWeight = 'normal',
         width = 100,
+        disabled=false,
     } = props;
 
+    const disabledBgColor = "#ddd";
+
+    const buttonStyle = disabled ? styles.disabledButtonText : styles.buttonText;
+    const buttonBgColor = disabled ? disabledBgColor : buttonColor;
+
     return (
-        <TouchableOpacity 
+        <TouchableOpacity
+            disabled={disabled} 
             style={[
                 styles.cardButton,
                 {
-                    backgroundColor: buttonColor,
+                    backgroundColor: buttonBgColor,
                     width,
                 }
                 ]}
             onPress={() => {
                 buttonCallback();
             }}>
-            <Text style={{fontWeight: fontWeight,
-            textAlign: 'center'}}>
+            <Text style={[buttonStyle, {fontWeight: fontWeight,
+            textAlign: 'center'}]}>
                 {buttonText}
             </Text>
         </TouchableOpacity>
@@ -39,4 +46,10 @@ const styles = StyleSheet.create({
         padding: 10,
         margin: 10,
     },
+    buttonText: {
+        color: 'black',
+    },
+    disabledButtonText: {
+        color: 'grey',
+    }  
 });

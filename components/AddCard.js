@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, Text, StyleSheet, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { addCard } from '../actions';
+import CardButton from './CardButton';
 
 function AddCard (props) {
     const [ question, setQuestion ] = useState('');
@@ -48,20 +49,20 @@ function AddCard (props) {
                 onChangeText={text => setAnswer(text)}
                 placeholder="Enter answer"
                 />
-            <Button
-                onPress={handleSubmit}
-                title="Submit"
-                color="#841584"
+            <CardButton
+                buttonCallback={handleSubmit}
+                buttonText="Submit"
                 disabled={buttonDisabled}
                 />
-            {(submittedQ && submittedA) && <View style={styles.success}>
+            {(submittedQ && submittedA) && 
+            <View style={styles.success}>
                 <Text>
                     Saved card:
                 </Text>
-                <Text>
+                <Text style={styles.submittedQ}>
                     {submittedQ}
                 </Text>
-                <Text>
+                <Text style={styles.submittedA}>
                     {submittedA}
                 </Text>
 
@@ -95,4 +96,19 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         margin: 10,
     },
+    submitButton: {
+        backgroundColor: 'grey',
+        margin: 10,
+    },
+    success: {
+        marginTop: 10,
+        alignItems: 'center',
+    },
+    submittedQ: {
+        fontSize: 20,
+        marginTop: 10,
+    },
+    submittedA: {
+        marginTop: 10,
+    }
 });
