@@ -1,14 +1,98 @@
-import * as React from 'react';
-import { View, Text } from 'react-native';
+import React, { useState } from 'react';
+import { View, TextInput, Text, StyleSheet, Button } from 'react-native';
+import { connect } from 'react-redux';
+import { addCard } from '../actions';
 
-function AddCard () {
+function AddCard (props) {
+    const [ question, setQuestion ] = useState('');
+    const [ answer, setAnswer ] = useState('');
+
+    const [ submittedQ, setSubmittedQ ] = useState(null);
+    const [ submittedA, setSubmittedA ] = useState(null);
+
+    const [ submitFailed, setSubmitFailed ] = useState(false);
+
+    const handleSubmit = () => {
+        const { route, dispatch } = props;
+        const { deckTitle } = route.params;
+        // dispatch addcard method
+        // go back to main screen
+        const card = { question, answer };
+        // best practice: make this a redux-thunk promise
+        const returnedAction = dispatch(addCard(deckTitle, card));
+
+        if (returnedAction.card.question && returnedAction.card.answer) {
+            setSubmittedQ(returnedAction.card.question);
+            setSubmittedA(returnedAction.card.answer);
+            setQuestion('');
+            setAnswer('');
+        } else {
+            setSubmitFailed(true);
+        }
+
+    };
+
+    const buttonDisabled = (question.trim() === '') || (answer.trim() === ''); 
+
     return (
         <View>
-            <Text>
-                This is the screen for adding a card
-            </Text>
+            <Text>Question</Text>
+            <TextInput style={styles.qInput}
+                value={question}
+                onChangeText={text => setQuestion(text)}
+                placeholder="Enter question"
+                />
+            <Text>Answer</Text>
+            <TextInput style={styles.aInput}
+                value={answer}
+                onChangeText={text => setAnswer(text)}
+                placeholder="Enter answer"
+                />
+            <Button
+                onPress={handleSubmit}
+                title="Submit"
+                color="#841584"
+                disabled={buttonDisabled}
+                />
+            {(submittedQ && submittedA) && <View style={styles.success}>
+                <Text>
+                    Saved card:
+                </Text>
+                <Text>
+                    {submittedQ}
+                </Text>
+                <Text>
+                    {submittedA}
+                </Text>
+
+            </View>}
+            {( submitFailed && 
+            <View>
+                <Text>
+                    Submit failed, try again
+                </Text>
+
+            </View>)}
         </View>
+
+        // add submit button
+        // add cancel button
     );
 }
 
-export default AddCard;
+export default connect()(AddCard);
+
+const styles = StyleSheet.create({
+    qInput: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        margin: 10,
+    },
+    aInput: {
+        height: 40,
+        borderColor: 'gray',
+        borderWidth: 1,
+        margin: 10,
+    },
+});

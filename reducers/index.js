@@ -9,25 +9,16 @@ import {
  } from '../actions';
 
 // ------------ state shape --------------
-//  export const DECK_DATA = {
+// export const DECK_DATA = {
 //     React: {
 //       title: 'React',
-//       questions: [
-//         {
+//       questions: {
+//         "bfk839rj3hgq91jw4553": {
 //           question: 'What is React?',
 //           answer: 'A library for managing user interfaces',
+//           timestamp: 1488579767190,
+//           correct: null,
 //         },
-//         {
-//           question: 'Where do you make Ajax requests in React?',
-//           answer: 'The componentDidMount lifecycle event',
-//         },
-//         {
-//             question: 'Can functional components store state?',
-//             answer: 'Yes, using hooks!'
-//         }
-//       ],
-//       score: 0,
-//       currentIdx: 0,
 
 function entries (state = {}, action) {
     let currentDeck = null;
@@ -46,14 +37,15 @@ function entries (state = {}, action) {
             };
         case ADD_CARD:
             currentDeck = state[action.deck];
+            console.log("ADD_CARD currentDeck: ", currentDeck);
             return {
                 ...state,
                 [action.deck]: {
                     ...currentDeck,
-                    questions: [
-                        ...currentDeck[questions],
-                        action.card,
-                    ]
+                    questions: {
+                        ...currentDeck.questions,
+                        [action.qid]: action.card,
+                    }
                 }
             }
         case INCREMENT_INDEX:

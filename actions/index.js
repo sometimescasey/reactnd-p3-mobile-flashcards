@@ -6,6 +6,20 @@ export const INCREMENT_INDEX = "INCREMENT_INDEX";
 export const MARK_RIGHT = "MARK_RIGHT";
 export const MARK_WRONG = "MARK_WRONG";
 
+import { generateUID } from '../utils/api';
+
+// ------------ state shape --------------
+// export const DECK_DATA = {
+//     React: {
+//       title: 'React',
+//       questions: {
+//         "bfk839rj3hgq91jw4553": {
+//           question: 'What is React?',
+//           answer: 'A library for managing user interfaces',
+//           timestamp: 1488579767190,
+//           correct: null,
+//         },
+
 export function receiveData (data) {
 	return {
 		type: RECEIVE_DATA,
@@ -20,11 +34,18 @@ export function addDeck (deck) {
 	}
 }
 
-export function addCard (deck, card) {
+export function addCard (deck, cardObj) {
+	const newId = generateUID();
+	console.log("newId: ", newId);
 	return {
 		type: ADD_CARD,
-        deck,
-        card,
+		deck,
+		qid: newId,
+        card: {
+			...cardObj,
+			timestamp: new Date().getTime(),
+			correct: null,
+		}
 	}
 }
 

@@ -54,7 +54,9 @@ class DeckIntro extends Component {
             <TouchableOpacity 
                 style={styles.addButton}
                 onPress={() => {
-                    navigation.push('Add Card')
+                    navigation.push('Add Card', {
+                        deckTitle: deckObj.title,
+                    })
                 }}
                 >
                 <Text>Add Card</Text>
