@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
-import { View, TextInput, Text, StyleSheet, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import { connect } from 'react-redux';
 import { addDeck } from '../actions';
 import CardButton from './CardButton';
 
 function AddDeck (props) {
+    
     const [ deckName, setDeckName ] = useState('');
     const [ submittedDeck, setSubmittedDeck ] = useState(null);
     const [ submitFailed, setSubmitFailed ] = useState(false);
 
-    const { deckData } = props;
+    useEffect(() => {
+        // clear info about submitted deck when user navigates away
+        const unsubscribe = navigation.addListener('blur', () => {
+          setSubmittedDeck(null);
+        });
+    
+        return unsubscribe;
+      }, [props.navigation]);
+
+    const { deckData, navigation } = props;
+    console.log("---navigation---: ", navigation);
 
     const handleSubmit = () => {
         const { dispatch } = props;
@@ -22,6 +33,10 @@ function AddDeck (props) {
         } else {
             setSubmitFailed(true);
         }
+
+    };
+
+    const backToMainList = () => {
 
     };
 
