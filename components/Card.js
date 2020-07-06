@@ -55,9 +55,6 @@ class Card extends Component {
 
         const correctList = attemptList.filter((q) => (q.correct === true));
 
-        console.log("attemptList: ", attemptList.length);
-        console.log("correctList: ", correctList.length);
-
         return { 
             curScore: correctList.length,
             attempts: attemptList.length };
@@ -102,7 +99,6 @@ class Card extends Component {
     handleCorrect = () => {
         const { route, currentIdx, dispatch, qList } = this.props;
         const { deckTitle } = route.params;
-        console.log("correct, qid ", qList[currentIdx].qid);
         dispatch(markRight(deckTitle, qList[currentIdx].qid))
         this.setState(() => ({
             correct: true,
@@ -113,7 +109,6 @@ class Card extends Component {
     handleIncorrect = () => {
         const { route, currentIdx, dispatch, qList } = this.props;
         const { deckTitle } = route.params;
-        console.log("incorrect, qid ", qList[currentIdx].qid);
         dispatch(markWrong(deckTitle, qList[currentIdx].qid))
         this.setState(() => ({
             correct: false,

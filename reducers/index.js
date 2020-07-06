@@ -37,7 +37,6 @@ function entries (state = {}, action) {
             };
         case ADD_CARD:
             currentDeck = state[action.deck];
-            console.log("ADD_CARD currentDeck: ", currentDeck);
             return {
                 ...state,
                 [action.deck]: {
@@ -49,7 +48,6 @@ function entries (state = {}, action) {
                 }
             }
         case INCREMENT_INDEX:
-            console.log("action.deck: ", action.deck);
             currentDeck = state[action.deck];
             return {
                 ...state,

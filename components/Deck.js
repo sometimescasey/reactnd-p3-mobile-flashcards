@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 class Deck extends Component {
     cardCount = () => {
         const { deckData, deckObj } = this.props;
-        console.log("-----deckData:", deckData);
         return Object.keys(deckData[deckObj.title].questions).length;
     }
 

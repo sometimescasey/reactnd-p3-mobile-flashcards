@@ -20,7 +20,6 @@ function AddDeck (props) {
       }, [props.navigation]);
 
     const { deckData, navigation } = props;
-    console.log("---navigation---: ", navigation);
 
     const handleSubmit = () => {
         const { dispatch } = props;
