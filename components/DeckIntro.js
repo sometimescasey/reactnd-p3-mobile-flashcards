@@ -6,17 +6,11 @@ import AddCard from './AddCard';
 
 class DeckIntro extends Component {
 
-    cardCount = () => {
-        const { route, deckData } = this.props;
-        const { deckObj } = route.params;
-        return Object.keys(deckData[deckObj.title].questions).length;
-    }
+    getQList = () => {
+        // repeated code - think about how to clean this up
+        const { deckTitle } = ownProps.route.params;
+        const qObj = store[deckTitle].questions;
 
-    getQuestionList = () => {
-        const { route, navigation, deckData } = this.props;
-        const { deckObj } = route.params;
-        const qObj = deckData[deckObj.title].questions;
-        // map to list sorted by timestamp
         function sortByTime(a, b) {
             if (a.timestamp < b.timestamp) {
                 return -1;
@@ -26,7 +20,7 @@ class DeckIntro extends Component {
             }
             return 0;
         }
-
+    
         const keys = Object.keys(qObj)
         const qList = keys.map((k) => (
             {
@@ -34,9 +28,15 @@ class DeckIntro extends Component {
                 qid: k,
             }
             
-            )).sort(sortByTime)
+            )).sort(sortByTime);
 
-        return qList;
+            return qList;
+    };
+
+    cardCount = () => {
+        const { route, deckData } = this.props;
+        const { deckObj } = route.params;
+        return Object.keys(deckData[deckObj.title].questions).length;
     }
     
     render() {
@@ -68,8 +68,6 @@ class DeckIntro extends Component {
                         {
                             // TODO: move first two to mapStateToProps,
                             // they don't need to be here
-                            qList: this.getQuestionList(),
-                            currentIdx: deckData[deckObj.title].currentIdx,
                             deckTitle: deckObj.title,     
                         }
                     )

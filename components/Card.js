@@ -24,6 +24,27 @@ class Card extends Component {
         borderColor: null,
     };
 
+    componentDidMount () {
+        // get needed pieces of state to restore correct appearance
+        // if we are in the middle of a deck
+        const { route, deckData, navigation, currentIdx, qList } = this.props;
+        const { deckTitle } = route.params;
+
+        const correct = qList[currentIdx].correct;
+
+        let borderColor = '#000';
+        if (correct === true) {
+            borderColor = greenColor;
+        } else if (correct === false) {
+            borderColor = redColor;
+        }
+
+        this.setState({ 
+            correct,
+            borderColor,
+        });
+    }
+
     getScoreAndAttempts = () => {
         const { route, deckData } = this.props;
         const { deckTitle } = route.params;
@@ -63,6 +84,7 @@ class Card extends Component {
             // TODO: redux update
             correct: null, // todo: move this to redux too
             showFront: true,
+            borderColor: null,
         }))
     };
 
@@ -78,8 +100,8 @@ class Card extends Component {
     };
 
     handleCorrect = () => {
-        const { route, currentIdx, dispatch } = this.props;
-        const { qList, deckTitle } = route.params;
+        const { route, currentIdx, dispatch, qList } = this.props;
+        const { deckTitle } = route.params;
         console.log("correct, qid ", qList[currentIdx].qid);
         dispatch(markRight(deckTitle, qList[currentIdx].qid))
         this.setState(() => ({
@@ -89,8 +111,8 @@ class Card extends Component {
     }
 
     handleIncorrect = () => {
-        const { route, currentIdx, dispatch } = this.props;
-        const { qList, deckTitle } = route.params;
+        const { route, currentIdx, dispatch, qList } = this.props;
+        const { deckTitle } = route.params;
         console.log("incorrect, qid ", qList[currentIdx].qid);
         dispatch(markWrong(deckTitle, qList[currentIdx].qid))
         this.setState(() => ({
@@ -100,8 +122,8 @@ class Card extends Component {
     }
     
     render() {
-        const { route, deckData, navigation, currentIdx } = this.props;
-        const { qList, deckTitle } = route.params;
+        const { route, deckData, navigation, currentIdx, qList } = this.props;
+        const { deckTitle } = route.params;
         const { correct } = this.state;
         const qObj = qList[currentIdx];
 
@@ -224,10 +246,32 @@ class Card extends Component {
 function mapStateToProps(store, ownProps) {
     const { deckTitle } = ownProps.route.params;
     const currentIdx = store[deckTitle].currentIdx;
+    const qObj = store[deckTitle].questions;
+
+    // map to list sorted by timestamp
+    function sortByTime(a, b) {
+        if (a.timestamp < b.timestamp) {
+            return -1;
+        }
+        if (a.timestamp > b.timestamp) {
+            return 1;
+        }
+        return 0;
+    }
+
+    const keys = Object.keys(qObj)
+    const qList = keys.map((k) => (
+        {
+            ...qObj[k],
+            qid: k,
+        }
+        
+        )).sort(sortByTime)
 
     return {
         deckData: store,
         currentIdx,
+        qList,
     };
 }
 

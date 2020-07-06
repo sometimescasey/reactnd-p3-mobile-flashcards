@@ -27,10 +27,15 @@ export function receiveData (data) {
 	}
 }
 
-export function addDeck (deck) {
+export function addDeck (deckName) {
 	return {
 		type: ADD_DECK,
-		entry,
+		deckName,
+		deckObj: {
+			title: deckName,
+			questions: {},
+			currentIdx: 0
+		}
 	}
 }
 

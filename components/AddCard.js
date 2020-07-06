@@ -36,7 +36,7 @@ function AddCard (props) {
     const buttonDisabled = (question.trim() === '') || (answer.trim() === ''); 
 
     return (
-        <View>
+        <View style={styles.addCardWrapper}>
             <Text>Question</Text>
             <TextInput style={styles.qInput}
                 value={question}
@@ -75,9 +75,6 @@ function AddCard (props) {
 
             </View>)}
         </View>
-
-        // add submit button
-        // add cancel button
     );
 }
 
@@ -110,5 +107,15 @@ const styles = StyleSheet.create({
     },
     submittedA: {
         marginTop: 10,
-    }
+    },
+    addCardWrapper: {
+        flex: 1,
+        borderWidth: 1,
+        borderRadius: 10,
+        borderColor: 'black',
+        margin: 10,
+        padding: 10,
+        alignItems: 'stretch',
+        justifyContent: 'flex-start',
+    },
 });

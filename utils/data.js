@@ -21,7 +21,6 @@ export const DECK_DATA = {
           correct: null,
       }
     },
-    score: 0,
     currentIdx: 0,
   },
   JavaScript: {
@@ -34,7 +33,6 @@ export const DECK_DATA = {
         correct: null,
       }
     },
-    score: 0,
     currentIdx: 0,
   }
 };

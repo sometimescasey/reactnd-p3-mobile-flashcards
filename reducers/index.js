@@ -33,7 +33,7 @@ function entries (state = {}, action) {
 		case ADD_DECK:
 			return {
 				...state,
-				...action.deck
+				[action.deckName]: action.deckObj,
             };
         case ADD_CARD:
             currentDeck = state[action.deck];
