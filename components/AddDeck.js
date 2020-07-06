@@ -29,13 +29,17 @@ function AddDeck (props) {
         if (returnedAction.deckName) {
             setSubmittedDeck(returnedAction.deckName);
             setDeckName('');
+
+            navigation.navigate('DeckIntroNav', { 
+                screen: 'Deck Intro',
+                // refactor - clean this up
+                deckObj: {title: returnedAction.deckName},
+                } 
+            )
+            
         } else {
             setSubmitFailed(true);
         }
-
-    };
-
-    const backToMainList = () => {
 
     };
 

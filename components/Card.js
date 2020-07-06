@@ -219,13 +219,18 @@ class Card extends Component {
                     <Text style={styles.scoreText}>{`(${(curScore * 100.0 / attempts).toFixed(2)}%)`}</Text>
                     </View>
                 </View>
-                <View id="card-bottom" style={styles.cardBottom}>
+                <View style={styles.cardBottom}>
                     <CardButton buttonCallback={this.resetDeck}
-                            buttonText="Reset Deck"
-                            buttonColor="#ddd"
+                            buttonText="Restart Quiz"
                             fontWeight='normal'
                             width={120}
                         />
+                    <CardButton buttonCallback={() => {
+                        navigation.goBack()
+                        }}
+                        buttonText="Back to Deck"
+                        width={120}
+                    />
                 </View>
             </View>
         );

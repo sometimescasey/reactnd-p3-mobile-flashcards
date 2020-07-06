@@ -18,7 +18,7 @@ class Deck extends Component {
                             navigation.push('DeckIntroNav', { 
                                 screen: 'Deck Intro',
                                 deckObj,
-                                randoParam: 'blabla' } 
+                                 } 
                             )
                         }}>
                         <Text style={styles.deckTitle}>{ deckObj.title }</Text>
