@@ -12,6 +12,8 @@ import { faQuestionCircle,
         faCheckCircle, 
         faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
+import { setLocalNotification, clearLocalNotification } from '../utils/helpers';
+
 const greenColor = "#5fb648";
 const redColor = "#ff5959";
 const iconSize = 40;
@@ -236,6 +238,10 @@ class Card extends Component {
         );
 
         if (this.state.showScore) {
+            // user has completed a Deck today
+            clearLocalNotification()
+            .then(setLocalNotification);
+            
             return score;
         } else {
             return card;
