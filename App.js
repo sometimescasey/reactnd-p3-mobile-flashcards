@@ -16,15 +16,18 @@ export default class App extends Component {
 
   render () {
     const { store, persistor } = configureStore();
+    console.log('-----------store: ', store);
+    console.log('-----------persistor: ', persistor);
 
     return (
+      
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        {/* <PersistGate loading={null} persistor={persistor}> */}
           <FlashcardStatusBar 
                     backgroundColor={blue} 
                     barStyle='light-content'/>
           <RootNavigator/>
-        </PersistGate>
+        {/* </PersistGate> */}
       </Provider>
     );
   }
