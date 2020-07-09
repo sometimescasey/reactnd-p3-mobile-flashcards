@@ -6,6 +6,10 @@ import { connect } from 'react-redux';
 class Deck extends Component {
     cardCount = () => {
         const { deckData, deckObj } = this.props;
+        console.log("------deckData: ", deckData);
+        // TODO: found the issue. 
+        // remove the "_persist" key from this list
+        // or move the deckData into its own key to avoid this issue
         return Object.keys(deckData[deckObj.title].questions).length;
     }
 

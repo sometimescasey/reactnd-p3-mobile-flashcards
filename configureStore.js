@@ -11,14 +11,15 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, reducer);
 
-// export default function configureStore(preloadedState) {
-//     let store = createStore(persistedReducer, middleware);
-//     let persistor = persistStore(store);
-//     return { store, persistor };
-// }
+// does not work
+export default function configureStore(preloadedState) {
+    let store = createStore(persistedReducer, preloadedState, middleware);
+    let persistor = persistStore(store);
+    return { store, persistor };
+}
 
 // This works fine!
-export default function configureStore() {
-    let store = createStore(reducer, middleware);
-    return { store };
-}
+// export default function configureStore() {
+//     let store = createStore(reducer, middleware);
+//     return { store };
+// }
