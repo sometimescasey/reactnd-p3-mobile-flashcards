@@ -66,8 +66,6 @@ class DeckIntro extends Component {
                 onPress={() => {
                     navigation.push('Card',
                         {
-                            // TODO: move first two to mapStateToProps,
-                            // they don't need to be here
                             deckTitle: deckObj.title,     
                         }
                     )
@@ -114,7 +112,7 @@ function mapStateToProps(store, ownProps) {
     return {
         route: ownProps.route,
         navigation: ownProps.navigation,
-        deckData: store,
+        deckData: store.deckData,
     };
 }
 

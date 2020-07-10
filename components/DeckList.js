@@ -61,7 +61,8 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(store, ownProps) {
-    const deckTitleList = Object.keys(store).map((deck) => ({title: deck}));
+    const deckTitleList = Object.keys(store.deckData)
+        .map((deck) => ({title: deck}));
 	return {
         deckTitleList,
         navigation: ownProps.navigation,

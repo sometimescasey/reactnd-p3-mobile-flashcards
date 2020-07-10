@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
-import reducer from './reducers';
+import rootReducer from './reducers';
 import middleware from './middleware';
 
 const persistConfig = {
@@ -9,7 +9,7 @@ const persistConfig = {
     storage: AsyncStorage,
 };
 
-const persistedReducer = persistReducer(persistConfig, reducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // does not work
 export default function configureStore(preloadedState) {

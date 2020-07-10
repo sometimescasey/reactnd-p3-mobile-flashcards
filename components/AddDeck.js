@@ -84,7 +84,7 @@ function AddDeck (props) {
 
 function mapStateToProps(store) {
     return {
-        deckData: store,
+        deckData: store.deckData,
     };
 }
 

@@ -251,8 +251,8 @@ class Card extends Component {
 
 function mapStateToProps(store, ownProps) {
     const { deckTitle } = ownProps.route.params;
-    const currentIdx = store[deckTitle].currentIdx;
-    const qObj = store[deckTitle].questions;
+    const currentIdx = store.deckData[deckTitle].currentIdx;
+    const qObj = store.deckData[deckTitle].questions;
 
     // map to list sorted by timestamp
     function sortByTime(a, b) {
@@ -275,15 +275,13 @@ function mapStateToProps(store, ownProps) {
         )).sort(sortByTime)
 
     return {
-        deckData: store,
+        deckData: store.deckData,
         currentIdx,
         qList,
     };
 }
 
 export default connect(mapStateToProps)(Card);
-
-// export default Card;
 
 const styles = StyleSheet.create({
     cardTop: {
