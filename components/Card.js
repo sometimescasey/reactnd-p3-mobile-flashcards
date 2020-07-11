@@ -13,9 +13,7 @@ import { faQuestionCircle,
         faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { setLocalNotification, clearLocalNotification } from '../utils/helpers';
-
-const greenColor = "#5fb648";
-const redColor = "#ff5959";
+import { greenColor, redColor } from '../utils/colors';
 const iconSize = 40;
 
 class Card extends Component {
@@ -251,8 +249,8 @@ class Card extends Component {
 
 function mapStateToProps(store, ownProps) {
     const { deckTitle } = ownProps.route.params;
-    const currentIdx = store[deckTitle].currentIdx;
-    const qObj = store[deckTitle].questions;
+    const currentIdx = store.deckData[deckTitle].currentIdx;
+    const qObj = store.deckData[deckTitle].questions;
 
     // map to list sorted by timestamp
     function sortByTime(a, b) {
@@ -275,15 +273,13 @@ function mapStateToProps(store, ownProps) {
         )).sort(sortByTime)
 
     return {
-        deckData: store,
+        deckData: store.deckData,
         currentIdx,
         qList,
     };
 }
 
 export default connect(mapStateToProps)(Card);
-
-// export default Card;
 
 const styles = StyleSheet.create({
     cardTop: {

@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import FlashcardStatusBar from './components/FlashcardStatusBar';
 import { blue } from './utils/colors';
 import RootNavigator from './navigation/RootNavigator';
+import configureStore from './configureStore';
 
-import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-
-import reducer from './reducers';
-import middleware from './middleware';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import { setLocalNotification } from './utils/helpers';
 
@@ -17,12 +15,16 @@ export default class App extends Component {
   }
 
   render () {
+    const { store, persistor } = configureStore();
+
     return (
-      <Provider store={createStore(reducer, middleware)}>
-        <FlashcardStatusBar 
-                  backgroundColor={blue} 
-                  barStyle='light-content'/>
-        <RootNavigator/>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <FlashcardStatusBar 
+                    backgroundColor={blue} 
+                    barStyle='light-content'/>
+          <RootNavigator/>
+        </PersistGate>
       </Provider>
     );
   }

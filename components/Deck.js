@@ -54,7 +54,7 @@ function mapStateToProps(store, ownProps) {
     return {
         deckObj: ownProps.deckObj, 
         navigation: ownProps.navigation,
-        deckData: store,
+        deckData: store.deckData,
     };
 }
 

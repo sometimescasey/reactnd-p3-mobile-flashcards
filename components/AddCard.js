@@ -86,12 +86,14 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         margin: 10,
+        paddingLeft: 10,
     },
     aInput: {
         height: 40,
         borderColor: 'gray',
         borderWidth: 1,
         margin: 10,
+        paddingLeft: 10,
     },
     submitButton: {
         backgroundColor: 'grey',
