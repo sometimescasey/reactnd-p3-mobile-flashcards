@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         margin: 10,
+        paddingLeft: 10,
     },
     addDeckWrapper: {
         flex: 1,
