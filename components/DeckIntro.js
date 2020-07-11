@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import AddCard from './AddCard';
 
+import { greenColor } from '../utils/colors';
+
 class DeckIntro extends Component {
 
     getQList = () => {
@@ -43,6 +45,12 @@ class DeckIntro extends Component {
         const { route, navigation, deckData } = this.props;
         const { deckObj } = route.params;
 
+        const sbStyle = (this.cardCount() > 0) ? 
+        styles.startButton : styles.startButtonDisabled;
+
+        const sbTextStyle = (this.cardCount() > 0) ?
+        null : styles.startButtonTextDisabled;
+
         return (
         <View style={styles.introWrapper}>
             <Text style={styles.deckTitle}>
@@ -62,7 +70,7 @@ class DeckIntro extends Component {
                 <Text>Add Card</Text>
             </TouchableOpacity>
             <TouchableOpacity
-                style={styles.startButton}
+                style={sbStyle}
                 onPress={() => {
                     navigation.push('Card',
                         {
@@ -70,8 +78,9 @@ class DeckIntro extends Component {
                         }
                     )
                 }}
+                disabled={(this.cardCount() < 1)}
                 >
-                <Text>Start</Text>
+                <Text style={sbTextStyle}>Start</Text>
             </TouchableOpacity>
         </View> );
     }
@@ -97,13 +106,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     startButton: {
-        backgroundColor: 'grey',
+        backgroundColor: greenColor,
         padding: 10,
         margin: 10,
         borderRadius: 10,
         width: 100,
         alignItems: 'center',
-    } 
+    },
+    startButtonDisabled: {
+        backgroundColor: '#ccc',
+        padding: 10,
+        margin: 10,
+        borderRadius: 10,
+        width: 100,
+        alignItems: 'center',
+    }, 
+    startButtonTextDisabled: {
+        color: '#666',
+    }  
 });
 
 // TODO: refactor later, apparently this doesn't even
