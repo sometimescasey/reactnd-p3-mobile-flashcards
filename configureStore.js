@@ -17,9 +17,3 @@ export default function configureStore(preloadedState) {
     let persistor = persistStore(store);
     return { store, persistor };
 }
-
-// This works fine!
-// export default function configureStore() {
-//     let store = createStore(reducer, middleware);
-//     return { store };
-// }
