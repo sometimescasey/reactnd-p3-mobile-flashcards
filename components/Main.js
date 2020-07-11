@@ -11,8 +11,15 @@ export default function Main () {
     return (
 
           <Stack.Navigator initialRouteName="All Decks">
-            <Stack.Screen name="All Decks" component={DeckList}/>
-            <Stack.Screen name="DeckIntroNav" component={DeckIntro}/>
+            <Stack.Screen
+              name="All Decks"
+              component={DeckList}  
+              />
+            <Stack.Screen 
+              name="DeckIntroNav"
+              component={DeckIntro}
+              options={{ title: 'Start Deck' }}
+              />
             <Stack.Screen name="Card" component={Card}/>
             <Stack.Screen name="Add Card" component={AddCard}/>
           </Stack.Navigator>
